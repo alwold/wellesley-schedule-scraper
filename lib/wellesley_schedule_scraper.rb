@@ -1,0 +1,2 @@
+class WellesleyScheduleScraper
+end
