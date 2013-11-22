@@ -1,5 +1,4 @@
 require 'wellesley_schedule_scraper'
-# require './class_info'
 require 'wellesley_spec_helpers.rb'
 
 RSpec.configure do |config|
@@ -8,13 +7,17 @@ end
 
 describe WellesleySpecHelpers do
   it "can figure out the current term" do
-    expect(get_current_term).to eq('201402')
+    expect(get_current_term.length).to eq(6)
   end
   it "can get an open class" do
-    expect(get_class(:open).name).to eq('Intro to Black Experience')
+    scraper = WellesleyScheduleScraper.new
+    open_class = get_class(get_current_term, :open)
+    expect(scraper.get_class_status(open_class.term, open_class.crn)).to eq(:open)
   end
   it "can get a closed class" do
-    expect(get_class(:closed).name).to eq('Medical Anthro:Comparative Std')
+    scraper = WellesleyScheduleScraper.new
+    closed_class = get_class(get_current_term, :closed)
+    expect(scraper.get_class_status(closed_class.term, closed_class.crn)).to eq(:closed)
   end
   it "can load info about an open class" do
     scraper = WellesleyScheduleScraper.new
@@ -24,7 +27,9 @@ describe WellesleySpecHelpers do
   end
   it "returns nil for non-existent class" do
     scraper = WellesleyScheduleScraper.new
-    info = scraper.get_class_info('201402', '12345')
+    info = scraper.get_class_info(get_current_term, '999999')
     expect(info).to be_nil
+    status = scraper.get_class_status(get_current_term, '999999')
+    expect(status).to be_nil
   end
 end

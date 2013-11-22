@@ -13,22 +13,18 @@ class WellesleyScheduleScraper
     end
   end
 
-  def get_class_status(term_code, course_abbrev, course_number, class_number)
-    doc = fetch_info(term_code, course_abbrev, course_number, class_number)
-    rows = doc.xpath("//table[tr/th/b/a[text()='Subject']]/tr[td]")
-    rows.each do |row|
-      cells = row.xpath("td")
-      if cells[1].text.strip == class_number
-    # name = string_value(doc.xpath("//tr[th/b/text()='Seats Available']/th")[1].text)
-        open_seats = cells[10].text.split('/')[0].to_i
-        if open_seats == 0
-          return :closed
-        else
-          return :open
-        end
+  def get_class_status(term_code, crn)
+    doc = fetch_info(term_code, crn)
+    seats_cell = doc.xpath("//tr[th/b/text()='Seats Available']/th")
+    if seats_cell.empty?
+      return nil
+    else
+      if seats_cell[1].text.to_i == 0
+        return :closed
+      else
+        return :open
       end
     end
-    nil
   end
 
 private
