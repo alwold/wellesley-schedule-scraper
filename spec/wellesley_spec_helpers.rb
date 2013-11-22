@@ -37,7 +37,13 @@ module WellesleySpecHelpers
 
   def get_schedule(semester)
     uri = URI('https://courses.wellesley.edu/')
-    res = Net::HTTP.post_form(uri, 'semester' => semester)
+    req = Net::HTTP::Post.new(uri.request_uri)
+    req.set_form_data('semester' => semester)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    res = http.start do |http|
+      res = http.request(req)
+    end
     Nokogiri::HTML(res.body)
   end
 end
