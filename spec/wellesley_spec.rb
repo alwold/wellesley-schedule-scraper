@@ -16,4 +16,9 @@ describe WellesleySpecHelpers do
   it "can get a closed class" do
     expect(get_class(:closed).name).to eq('Medical Anthro:Comparative Std')
   end
+  it "can load info about an open class" do
+    scraper = WellesleyScheduleScraper.new
+    info = scraper.get_class_info('201402', '22131')
+    expect(info.name).to eq('First-Year Seminar: Reading/Writing Short Fiction')
+  end
 end
