@@ -22,4 +22,9 @@ describe WellesleySpecHelpers do
     expect(info.name).to eq('First-Year Seminar: Reading/Writing Short Fiction')
     expect(info.schedule).to eq('TF - 01:30 pm - 02:40 pm Loc:')
   end
+  it "returns nil for non-existent class" do
+    scraper = WellesleyScheduleScraper.new
+    info = scraper.get_class_info('201402', '12345')
+    expect(info).to be_nil
+  end
 end

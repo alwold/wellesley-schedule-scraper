@@ -3,9 +3,14 @@ require_relative 'wellesley_class_info'
 class WellesleyScheduleScraper
   def get_class_info(term_code, crn)
     doc = fetch_info(term_code, crn)
-    name = string_value(doc.xpath("//tr[th/b/text()='Title']/th")[1].text)
-    schedule = string_value(doc.xpath("//tr[th/b/text()='Meeting Time(s)']/th")[1].text)
-    return WellesleyClassInfo.new(name, schedule)
+    title_cell = doc.xpath("//tr[th/b/text()='Title']/th")
+    if title_cell.empty?
+      return nil
+    else
+      name = string_value(title_cell[1].text)
+      schedule = string_value(doc.xpath("//tr[th/b/text()='Meeting Time(s)']/th")[1].text)
+      return WellesleyClassInfo.new(name, schedule)
+    end
   end
 
   def get_class_status(term_code, course_abbrev, course_number, class_number)
