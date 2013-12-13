@@ -5,6 +5,13 @@ require 'class_info'
 module WellesleySpecHelpers
   def get_current_term
     doc = get_doc("https://courses.wellesley.edu/")
+    doc.xpath("//select[@id='semester']/option/@value").each do |match|
+      # try to match a fall/spring first
+      if match.value.end_with?('02') || match.value.end_with?('09')
+        return match.value
+      end
+    end
+    # otherwise just use the first
     doc.xpath("//select[@id='semester']/option[position()=1]/@value")[0].value
   end
 
