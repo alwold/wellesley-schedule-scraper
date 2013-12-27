@@ -9,6 +9,7 @@ class WellesleyScheduleScraper
     else
       name = string_value(title_cell[1].text)
       schedule = string_value(doc.xpath("//tr[th/b/text()='Meeting Time(s)']/th")[1].text)
+      schedule = schedule.sub(/\s*Loc:.*$/, '')
       return WellesleyClassInfo.new(name, schedule)
     end
   end
