@@ -20,7 +20,7 @@ module WellesleySpecHelpers
     course_rows = doc.xpath("//table[thead/tr/th/text()='CRN']/tbody/tr")
     course_rows.each do |row|
       cells = row.xpath("th")
-      available_seats = cells[4].text.split("/")[0].to_i
+      available_seats = cells[4].xpath('text()').text.split("/")[0].to_i
       if (status == :open && available_seats != 0) || (status == :closed && available_seats == 0)
         course = ClassInfo.new
         course.crn = cells[0].text
