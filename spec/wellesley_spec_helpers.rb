@@ -7,7 +7,8 @@ module WellesleySpecHelpers
     doc = get_doc("https://courses.wellesley.edu/")
     doc.xpath("//select[@id='semester']/option/@value").each do |match|
       # try to match a fall/spring first
-      if match.value.end_with?('02') || match.value.end_with?('09')
+      # don't use the fall semester until august, because it will be all empty
+      if match.value.end_with?('02') || (match.value.end_with?('09') && Date.today.month > 7)
         return match.value
       end
     end
