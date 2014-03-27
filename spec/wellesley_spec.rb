@@ -21,8 +21,8 @@ describe WellesleySpecHelpers do
   end
   it "can load info about an open class" do
     scraper = WellesleyScheduleScraper.new
-    info = scraper.get_class_info('201402', '22815')
-    expect(info.name).to eq('Introduction to the Black Experience')
+    info = scraper.get_class_info('201409', '13107')
+    expect(info.name).to eq('The African American Literary Tradition')
     expect(info.schedule).to eq('T - 01:30 pm - 04:00 pm')
   end
   it "returns nil for non-existent class" do
